@@ -131,6 +131,8 @@ span.text-red {
 .hero-banner-container {
   padding: 100px 40px;
   background-color: #dcdcdc;
+  background: linear-gradient(180deg, #9c9ca9 0%, #cdcdd6 100%);
+
   border-radius: 15px;
   position: relative;
   height: 500px;
@@ -415,6 +417,7 @@ span.text-red {
 .product-detail-image {
   border-radius: 15px;
   background-color: #ebebeb;
+  background-color: #b7b7c1;
 
   width: 400px;
   height: 400px;
