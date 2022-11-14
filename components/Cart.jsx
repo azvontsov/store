@@ -39,6 +39,7 @@ const Cart = () => {
         {cartItems.length < 1 && (
           <div className="empty-cart">
             <HiOutlineShoppingBag size={100} />
+
             <h3>Your shopping bag is empty</h3>
             <Link href="/">
               <button

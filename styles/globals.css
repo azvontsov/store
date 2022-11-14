@@ -7,8 +7,16 @@ body,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   box-sizing: border-box;
 }
+body {
+  background: linear-gradient(180deg, #f6f6f6 0%, #bcbcc4 100%);
+  z-index: -1;
+}
 ::-webkit-scrollbar {
   width: 0px;
+}
+.logo {
+  width: 150px;
+  margin-left: 50px;
 }
 
 a {
@@ -131,7 +139,8 @@ span.text-red {
 .hero-banner-container {
   padding: 100px 40px;
   background-color: #dcdcdc;
-  background: linear-gradient(180deg, #9c9ca9 0%, #cdcdd6 100%);
+  background-color: #9c9ca9;
+  /* background: linear-gradient(180deg, #9c9ca9 0%, #cdcdd6 100%); */
 
   border-radius: 15px;
   position: relative;
