@@ -11,12 +11,13 @@ const Navbar = ({ heroBanner }) => {
       <p>
         <Link href="/">
           {/* Misha's Merch */}
-          <div>
+          <div className="nav-logo">
             <img
               className="logo"
               src="https://res.cloudinary.com/antonjs/image/upload/v1668385050/logo_pcuuiv.png"
               alt=""
             />
+            <p>Misha's Merch on Demand</p>
           </div>
         </Link>
       </p>
