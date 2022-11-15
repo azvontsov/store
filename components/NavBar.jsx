@@ -14,7 +14,7 @@ const Navbar = ({ heroBanner }) => {
           <div className="nav-logo">
             <img
               className="logo"
-              src="https://res.cloudinary.com/antonjs/image/upload/v1668385050/logo_pcuuiv.png"
+              src="https://res.cloudinary.com/antonjs/image/upload/v1668474961/tshirts/logo_evobp1.png"
               alt=""
             />
             <p>Misha's Merch on Demand</p>
