@@ -1,60 +1,59 @@
-import React from "react";
-import { loadStripe } from "@stripe/stripe-js";
+import Stripe from "stripe";
 
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(
-  process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-);
-export default function PreviewPage() {
-  React.useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
-    const query = new URLSearchParams(window.location.search);
-    if (query.get("success")) {
-      console.log("Order placed! You will receive an email confirmation.");
+const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET_KEY);
+
+export default async function handler(req, res) {
+  if (req.method === "POST") {
+    try {
+      const params = {
+        submit_type: "pay",
+        mode: "payment",
+        payment_method_types: ["card"],
+        billing_address_collection: "auto",
+        shipping_options: [
+          { shipping_rate: "shr_1M4Y81LYxghfygzYp9yUG6OQ" },
+          { shipping_rate: "shr_1M4Y9ULYxghfygzYnjNqyprR" },
+          { shipping_rate: "shr_1M4ZafLYxghfygzYhs8Nb8gI" },
+          { shipping_rate: "shr_1M4ZbrLYxghfygzY2ok2UexO" },
+        ],
+        line_items: req.body.map((item) => {
+          const img = item.image[0].asset._ref;
+          const newImage = img
+            .replace(
+              "image-",
+              "https://cdn.sanity.io/images/mhuyb35n/production/"
+            )
+            .replace("-png", ".png");
+
+          return {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: item.name,
+                images: [newImage],
+              },
+              unit_amount: item.price * 100,
+            },
+            adjustable_quantity: {
+              enabled: true,
+              minimum: 1,
+            },
+            quantity: item.quantity,
+          };
+        }),
+
+        success_url: `${req.headers.origin}/?success=true`,
+        cancel_url: `${req.headers.origin}/?canceled=true`,
+      };
+      // Create Checkout Sessions from body params.
+      const session = await stripe.checkout.sessions.create(params);
+
+      res.status(500).json(session);
+    } catch (err) {
+      res.status(err.statusCode || 500).json(err.message);
     }
-
-    if (query.get("canceled")) {
-      console.log(
-        "Order canceled -- continue to shop around and checkout when you’re ready."
-      );
-    }
-  }, []);
-
-  return (
-    <form action="/api/checkout_sessions" method="POST">
-      <section>
-        <button type="submit" role="link">
-          Checkout
-        </button>
-      </section>
-      <style jsx>
-        {`
-          section {
-            background: #ffffff;
-            display: flex;
-            flex-direction: column;
-            width: 400px;
-            height: 112px;
-            border-radius: 6px;
-            justify-content: space-between;
-          }
-          button {
-            height: 36px;
-            background: #556cd6;
-            border-radius: 4px;
-            color: white;
-            border: 0;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0px 4px 5.5px 0px rgba(0, 0, 0, 0.07);
-          }
-          button:hover {
-            opacity: 0.8;
-          }
-        `}
-      </style>
-    </form>
-  );
+  } else {
+    res.setHeader("Allow", "POST");
+    res.status(405).end("Method Not Allowed");
+  }
 }

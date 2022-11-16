@@ -1,7 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import NavBar from "./NavBar";
-import FooterBanner from "./FooterBanner";
+// import FooterBanner from "./FooterBanner";
 import Footer from "./Footer";
 
 const Layout = ({ children }) => {
@@ -10,13 +10,12 @@ const Layout = ({ children }) => {
       <Head>
         <title>AZ Store</title>
       </Head>
-      <header>
+
+      <main className="main-container">
         <NavBar />
-      </header>
-      <main className="main-container">{children}</main>
-      <footer>
+        {children}
         <Footer />
-      </footer>
+      </main>
     </div>
   );
 };
